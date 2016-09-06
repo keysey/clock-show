@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>	
+		<style>
+			ul{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.box{
+				width: 976px;
+				height: 172px;
+			}
+			ul li{
+				width: 122px;
+				height: 172px;
+				vertical-align: top;
+				float: left;
+				overflow: hidden;
+				position: relative;
+			}
+			ul li p{
+				width: 122px;
+				height: 344px;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			
+		</style>
+		<script type="text/javascript" src="../JS/mTween2.js" ></script>
+	</head>
+	<body>
+		<p id="time" style="font-size: 40px;display: none;"></p>
+		<div class="box">
+			<ul id="list">
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/colon.JPG" />
+						<img src="../img3/colon.png" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/colon.JPG" />
+						<img src="../img3/colon.png" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../img3/0.JPG" />
+						<img src="../img3/1.JPG" />
+					</p>
+				</li>
+			</ul>
+		</div>
+		<script>
+			var oTime = document.getElementById('time');
+			var oList = document.getElementById('list');
+			var oLi = document.getElementsByTagName('li');
+			var oP = list.getElementsByTagName('p');
+			function Totime(n){
+				return n<10?  '0'+n : ''+n;   //三目算法
+			}
+			var d = new Date();
+			var hours = d.getHours();
+			var mins = d.getMinutes();
+			var seconds = d.getSeconds();
+			var str = Totime(hours)+':'+Totime(mins)+':'+Totime(seconds);
+			oTime.innerHTML = str;
+			for (var i = 0; i < str.length; i++) {
+				var oImg1 = oP[i].getElementsByTagName('img')[0];
+				var oImg2 = oP[i].getElementsByTagName('img')[1];
+				if (str.charAt(i)!==':') {
+					oImg1.src='../img3/'+str.charAt(i)+'.JPG';
+				} else{						
+					oImg1.src='../img3/colon.JPG';
+				}	
+			}
+			var oldtime=str;    //保存页面打开的时候的旧时间
+			setInterval(function (){
+				var d = new Date();
+				var hours = d.getHours();
+				var mins = d.getMinutes();
+				var seconds = d.getSeconds();
+				var str = Totime(hours)+':'+Totime(mins)+':'+Totime(seconds);   //定时器里面获取现在的新时间
+//				console.log(oldtime,str);
+				for (var i = 0; i < str.length; i++) {
+					var oImg1 = oP[i].getElementsByTagName('img')[0];
+					var oImg2 = oP[i].getElementsByTagName('img')[1];
+					if (str.charAt(i)!==':') {
+						oImg2.src='../img3/'+str.charAt(i)+'.JPG';
+						if (str.charAt(i)!==oldtime.charAt(i)) {
+							(function(i){							//闭包函数
+									mTween(oP[i], "top", -172, 500, 'linear', function(){
+									oP[i].style.top=0;
+									var newImg1 = oP[i].getElementsByTagName('img')[0];
+									var newImg2 = oP[i].getElementsByTagName('img')[1];
+									newImg1.src = newImg2.src;
+								})
+							})(i)
+							
+						}
+					} else{						
+						oImg1.src='../img3/colon.JPG';
+						(function(imga){
+							setTimeout(function(){
+								imga.src='../img3/colon.png';
+							},500)
+						})(oImg1);					
+					}	
+				}	
+				oldtime=str;
+			},1000);
+			
+		</script>
+	</body>
+</html>
